@@ -5,7 +5,7 @@ require 'activetodo/version'
 
 Gem::Specification.new do |spec|
   spec.name          = 'activetodo'
-  spec.version       = Activetodo::VERSION
+  spec.version       = ActiveTodo::VERSION
   spec.authors       = ['Tomas Varaneckas']
   spec.email         = ['tomas.varaneckas@gmail.com']
   spec.description   = %q{This gem provides 'TOD*', 'F*XME' and 'XX*' as methods you can use in code}

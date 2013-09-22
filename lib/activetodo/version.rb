@@ -1,3 +1,3 @@
-module Activetodo
+module ActiveTodo
   VERSION = "0.0.1"
 end
