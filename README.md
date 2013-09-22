@@ -2,6 +2,7 @@
 
 [![Build Status](https://travis-ci.org/spajus/activetodo.png?branch=master)](https://travis-ci.org/spajus/activetodo)
 [![Coverage Status](https://coveralls.io/repos/spajus/activetodo/badge.png?branch=master)](https://coveralls.io/r/spajus/activetodo)
+[![Code Climate](https://codeclimate.com/github/spajus/activetodo.png?branch=master)](https://codeclimate.com/github/spajus/activetodo)
 
 Forget TODO comments that are sitting in your code forever
 
