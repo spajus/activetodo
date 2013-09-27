@@ -22,7 +22,21 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Use anywhere in code:
+```ruby
+# Generic TODO without deadline
+TODO 'Add specs'
+
+# Raises error after 2014-01-01
+FIXME 'Certificate will expire soon', deadline: '2014-01-01'
+
+# After 2014-02-28, does Rails.logger.warn in production, raises error in development / test
+XXX 'Dirty hack, must refactor', deadline: '2014-02-28', warn_only: Rails.env.production?
+```
+
+`TODO`, `FIXME` and `XXX` all have same interface: `TODO(<message>, [options_hash])`
+
+You can use `activetodo` with or without Rails.
 
 ## Contributing
 
