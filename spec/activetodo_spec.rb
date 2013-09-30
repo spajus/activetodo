@@ -34,9 +34,10 @@ describe ActiveTodo::KernelMethods do
         specify { expect { subject }.to_not raise_error }
       end
 
-      context 'raises error after it was reached' do
+      context 'warns after it was reached' do
         let(:now) { future }
-        specify { expect { subject }.to raise_error }
+        before { ActiveTodo::PrivateMethods.should_receive(:log_message) }
+        specify { expect { subject }.to_not raise_error }
       end
     end
 

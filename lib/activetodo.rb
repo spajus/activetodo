@@ -6,7 +6,7 @@ module ActiveTodo
     class << self
       def warn_only?(options = {})
         return options[:warn_only] if options.keys.include?(:warn_only)
-        @@warn_only ||= false
+        @@warn_only ||= true
       end
 
       def warn_only=(condition)
