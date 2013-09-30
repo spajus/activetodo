@@ -27,16 +27,34 @@ Use anywhere in code:
 # Generic TODO without deadline
 TODO 'Add specs'
 
-# Raises error after 2014-01-01
+# After 2014-01-01 it will `Rails.logger.warn` or `puts` if outside Rails
 FIXME 'Certificate will expire soon', deadline: '2014-01-01'
 
-# After 2014-02-28, does Rails.logger.warn in production, raises error in development / test
-XXX 'Dirty hack, must refactor', deadline: '2014-02-28', warn_only: Rails.env.production?
+# Raises error after 2014-02-28
+XXX 'Dirty hack, must refactor', deadline: '2014-02-28', warn_only: false
 ```
 
 `TODO`, `FIXME` and `XXX` all have same interface: `TODO(<message>, [options_hash])`
 
 You can use `activetodo` with or without Rails.
+
+## Configuring default deadline behavior
+
+By default, ActiveTodo will not raise errors when deadline is reached. You may want to enabled that
+depending on your environment. In Rails, do that by creating `config/initializers/activetodo.rb`
+with following lines:
+
+```ruby
+ActiveTodo.configure do |config|
+  # Log deadline warnings in Production, raise errors in Development / Test
+  config.warn_only = Rails.env.production?
+end
+```
+
+You can still override the default configuration by passing `warn_only` option:
+```ruby
+TODO 'Remove this internal testing controller', deadline: '2013-05-01', warn_only: false
+```
 
 ## Contributing
 

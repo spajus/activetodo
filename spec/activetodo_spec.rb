@@ -46,6 +46,25 @@ describe ActiveTodo::KernelMethods do
 
       subject { FIXME 'Refactor shit', deadline: '2014-01-01', warn_only: true }
 
+      context 'preconfigured' do
+
+        before { ActiveTodo.configure { |c| c.warn_only = true } }
+
+        context 'without override' do
+          subject { FIXME 'Refactor shit', deadline: '2014-01-01' }
+
+          before { ActiveTodo::PrivateMethods.should_receive(:log_message) }
+
+          specify { expect { subject }.not_to raise_error }
+        end
+
+        context 'with override' do
+          subject { FIXME 'Refactor shit', deadline: '2014-01-01', warn_only: false }
+
+          specify { expect { subject }.to raise_error }
+        end
+      end
+
       context 'outside Rails' do
         before { ActiveTodo::PrivateMethods.should_receive(:log_message) }
         specify { expect { subject }.not_to raise_error }

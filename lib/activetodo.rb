@@ -2,6 +2,23 @@ require 'activetodo/version'
 
 module ActiveTodo
 
+  class Configuration
+    class << self
+      def warn_only?(options = {})
+        return options[:warn_only] if options.keys.include?(:warn_only)
+        @@warn_only ||= false
+      end
+
+      def warn_only=(condition)
+        @@warn_only = condition
+      end
+    end
+  end
+
+  def self.configure
+    yield Configuration if block_given?
+  end
+
   class PrivateMethods
     class << self
       def log_message(message)
@@ -22,7 +39,7 @@ module ActiveTodo
       if deadline && DateTime.now >= deadline
         message = "Deadline reached for \"#{what}\" (#{options[:deadline]})"
 
-        if options[:warn_only]
+        if Configuration.warn_only?(options)
           PrivateMethods.log_message(message)
         else
           raise message
