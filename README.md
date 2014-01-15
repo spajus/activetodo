@@ -32,6 +32,10 @@ FIXME 'Certificate will expire soon', deadline: '2014-01-01'
 
 # Raises error after 2014-02-28
 XXX 'Dirty hack, must refactor', deadline: '2014-02-28', warn_only: false
+
+# In Rails, if you want it to log warnings in production, use `ignore_production` = false
+# By default it will do nothing in production
+TODO 'Remove unused class LegacyModel', deadline: '2015-01-04', ignore_production: false
 ```
 
 `TODO`, `FIXME` and `XXX` all have same interface: `TODO(<message>, [options_hash])`
@@ -48,6 +52,9 @@ with following lines:
 ActiveTodo.configure do |config|
   # Log deadline warnings in Production, raise errors in Development / Test
   config.warn_only = Rails.env.production?
+
+  # Allow logging in Rails.env.production (by default it will not do anything)
+  config.ignore_production = false
 end
 ```
 
@@ -55,6 +62,10 @@ You can still override the default configuration by passing `warn_only` option:
 ```ruby
 TODO 'Remove this internal testing controller', deadline: '2013-05-01', warn_only: false
 ```
+
+ActiveTodo will not do anything in production, unless you provide `ignore_production: false`
+option in your `TODO` calls, or add `config.ignore_production = false` in `ActiveTodo.configure`
+block.
 
 ## Contributing
 

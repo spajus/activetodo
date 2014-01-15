@@ -12,6 +12,15 @@ module ActiveTodo
       def warn_only=(condition)
         @@warn_only = condition
       end
+
+      def ignore_production?(options = {})
+        return options[:ignore_production] if options.keys.include?(:ignore_production)
+        @@ignore_production ||= true
+      end
+
+      def ignore_production=(condition)
+        @@ignore_production = condition
+      end
     end
   end
 
@@ -21,7 +30,10 @@ module ActiveTodo
 
   class PrivateMethods
     class << self
-      def log_message(message)
+      def log_message(message, options)
+        if defined?(Rails) && Configuration.ignore_production?(options)
+          return if Rails.env.production?
+        end
         if defined?(Rails) && Rails.logger
           Rails.logger.warn(message)
         else
@@ -40,7 +52,7 @@ module ActiveTodo
         message = "Deadline reached for \"#{what}\" (#{options[:deadline]})"
 
         if Configuration.warn_only?(options)
-          PrivateMethods.log_message(message)
+          PrivateMethods.log_message(message, options)
         else
           raise message
         end
