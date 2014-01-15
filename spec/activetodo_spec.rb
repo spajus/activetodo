@@ -76,13 +76,26 @@ describe ActiveTodo::KernelMethods do
         let(:rails) { double(:rails) }
         let(:logger) { double(:logger) }
 
-        before do
-          stub_const('Rails', rails)
-          Rails.should_receive(:logger).twice.and_return(logger)
-          logger.should_receive(:warn)
+        context 'not production' do
+          before do
+            stub_const('Rails', rails)
+            Rails.stub_chain(:env, :production?).and_return(false)
+            Rails.should_receive(:logger).twice.and_return(logger)
+            logger.should_receive(:warn)
+          end
+
+          specify { expect { subject }.not_to raise_error }
         end
 
-        specify { expect { subject }.not_to raise_error }
+        context 'production' do
+          before do
+            stub_const('Rails', rails)
+            Rails.stub_chain(:env, :production?).and_return(true)
+            Rails.should_not_receive(:logger)
+          end
+
+          specify { expect { subject }.not_to raise_error }
+        end
       end
     end
   end
