@@ -98,5 +98,17 @@ describe ActiveTodo::KernelMethods do
         end
       end
     end
+
+    context 'when call site logging enabled' do
+      subject { TODO 'remove this', deadline: (Time.now - 3600).to_s }
+
+      before do
+        ActiveTodo.configure { |c| c.show_callsite = true }
+        filename_pattern = /#{Regexp.escape(Pathname(__FILE__).basename.to_s)}/
+        ActiveTodo::PrivateMethods.should_receive(:log_message).with(filename_pattern, anything)
+      end
+
+      specify { expect { subject }.not_to raise_error }
+    end
   end
 end

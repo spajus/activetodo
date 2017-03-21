@@ -21,6 +21,14 @@ module ActiveTodo
       def ignore_production=(condition)
         @@ignore_production = condition
       end
+
+      def show_callsite?
+        @@show_callsite ||= false
+      end
+
+      def show_callsite=(condition)
+        @@show_callsite = condition
+      end
     end
   end
 
@@ -47,9 +55,11 @@ module ActiveTodo
 
     def TODO(what, options = {})
       deadline = DateTime.parse(options[:deadline]) if options[:deadline]
+      callsite = caller.first if Configuration.show_callsite?
 
       if deadline && DateTime.now >= deadline
         message = "Deadline reached for \"#{what}\" (#{options[:deadline]})"
+        message += " in #{callsite}" if callsite
 
         if Configuration.warn_only?(options)
           PrivateMethods.log_message(message, options)
